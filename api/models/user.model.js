@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
 
     avatar:{
         type: String,
-        default:"https://th.bing.com/th/id/OIP.I7-Kp6ayUzLQuonE6-rrlAHaJW?w=154&h=194&c=7&r=0&o=5&dpr=2.1&pid=1.7",
+        default:"https://bing.com/th/id/OIP.CNIPJOPWQ1tiTLX1WxEx3QHaH_?cb=thvnextc2&rs=1&pid=ImgDetMain",
     },
 },{timestamps: true});
 
