@@ -6,11 +6,6 @@ import authRouter from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 dotenv.config();
 
-const app=express();
-
-app.use(express.json());
-
-app.use(cookieParser());
 
 mongoose.connect(process.env.MONGO)
   .then(() => {
@@ -19,6 +14,12 @@ mongoose.connect(process.env.MONGO)
   .catch((err) => {
     console.log('Error connecting to MongoDB:', err);
   });
+
+  const app=express();
+
+app.use(express.json());
+
+app.use(cookieParser());
 
   
 app.listen(3000, () => {

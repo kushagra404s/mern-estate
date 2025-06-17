@@ -16,6 +16,7 @@ export default function Profile() {
   
 
   const[formData, setFormData] = useState({})
+  
   const [updateSuccesss,setUpdateSuccess] = useState(false);
 
 
@@ -30,30 +31,25 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res= await fetch(`/api/users/update/${currentUser._id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-        });
-          console.log("Submitting formData:", formData);
-        const data = await res.json();
-        if(data.success===false) {
-          dispatch(updateUserFailure(data.message));
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
 
-          return;
-        }
-
-        dispatch(updateUserSuccess(data));
-        setUpdateSuccess(true);
-
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
     } catch (error) {
       dispatch(updateUserFailure(error.message));
     }
-
-  }
+  };
 
   useEffect(()=>{
     if(file){
@@ -121,8 +117,8 @@ export default function Profile() {
 <input type="text" placeholder="username" defaultValue={currentUser.username} id="username" className="border p-3 rounded-lg" onChange={handleChange} />
 
 <input type="email" placeholder="email" defaultValue={currentUser.email} id="email" className="border p-3 rounded-lg" onChange={handleChange} />
-<input type="text" placeholder="password" id="password" className="border p-3 rounded-lg" onChange={handleChange} />
-<button disabled={loading} className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">{loading? 'Loading...' : 'Update'}</button>
+<input type="password" placeholder="password" id="password" className="border p-3 rounded-lg" onChange={handleChange} />
+<button disabled={loading} className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">{loading? 'Loading...' : 'Update'} </button>
       </form>
       <div className="flex justify-between mt-5">
         <span className="text-red-700 cursor-pointer">Delete Account</span>
