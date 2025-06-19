@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const listingSchema = new mongoose.Schema(
 
     {
-        namne:{
+        name:{
             type: String,
             required: true,
             
