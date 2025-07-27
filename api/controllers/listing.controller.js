@@ -25,5 +25,19 @@ export const deleteListing = async (req, res, next) => {
     catch(error) {
         return next(error);
     }
+}
 
+export const updateListing = async (req, res, next) => {
+    if(req.user.id !== req.body.userRef) {
+        return next(errorHandler(403, 'You are not allowed to update this listing'));
+    }
+     if(req.user.id!==listing.userRef){
+        return next(errorHandler(403, 'You are not allowed to delete this listing'));
+    }
+    try {
+        await Listing.findByIdAndUpdate(req.params.id, req.body,  {new:true});
+        res.status(200).json("Listing has been updated successfully!");
+    } catch (error) {
+        next(error);
+    }
 }
