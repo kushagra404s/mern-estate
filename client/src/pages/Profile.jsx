@@ -71,7 +71,6 @@ const[userListings,setUserListings] = useState([]);
 
   const handleFileUpload = async (file) => {
     const storage=getStorage(app);
-    
 
     const fileName=new Date().getTime()+file.name;
     const storageRef = ref(storage, fileName);
