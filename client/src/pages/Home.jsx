@@ -1,7 +1,86 @@
-import React from 'react'
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import SwiperCore from 'swiper';
+import 'swiper/css/bundle';
+import ListingItem from '../components/ListingItem';
 
 export default function Home() {
+  const[offerListings, setOfferListings] = useState([]);
+  const[rentListings, setRentListings] = useState([]);
+  const[saleListings, setSaleListings] = useState([]);
+  SwiperCore.use([Navigation]);
+  
+  useEffect(()=>{
+    const fetchOfferListings = async () => {
+try {
+  const res=await fetch('/api/listing/get?offer=true & limit=4');
+  const data = await res.json();
+  setOfferListings(data);
+  fetchRentListings();
+
+} catch (error) {
+  console.log("Error fetching offer listings:", error);
+}
+    }
+
+   const fetchRentListings = async () => {
+      try {
+        const res = await fetch('/api/listing/get?rent=true&limit=4');
+        const data = await res.json();
+        setRentListings(data);
+        fetchSaleListings();
+        
+      } catch (error) {
+        console.log("Error fetching rent listings:", error);
+      }
+   }
+    const fetchSaleListings = async () => {
+      try {
+           const res=await fetch('/api/listing/get?type=sale&limit=4');
+           const data = await res.json();
+           setSaleListings(data);
+      } catch (error) {
+        console.log("Error fetching sale listings:", error);
+        
+      }
+    }
+
+    fetchOfferListings();
+  })
+
   return (
-    <div>Home</div>
+    <div>
+      <div className='flex flex-col gap-3 p-28 px-3'>
+        <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'> Find Your <span className='text-slate-500'>Perfect</span><br/>
+        deal with ease</h1>
+        
+        we have wide range of properties for you to choose from.
+
+              <Link to={"/search"} className='text-blue-700 font-bold'>Let's Go</Link>
+      </div>
+
+     <Swiper navigation>
+        {offerListings &&
+          offerListings.length > 0 &&
+          offerListings.map((listing) => (
+            <SwiperSlide>
+              <div
+                style={{
+                  background: `url(${listing.imageUrls[0]}) center no-repeat`,
+                  backgroundSize: 'cover',
+                }}
+                className='h-[500px]'
+                key={listing._id}
+              ></div>
+            </SwiperSlide>
+          ))}
+      </Swiper>
+       
+       
+
+
+    </div>
   )
 }
