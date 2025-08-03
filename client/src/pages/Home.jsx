@@ -10,8 +10,9 @@ export default function Home() {
   const [offerListings, setOfferListings] = useState([]);
   const [saleListings, setSaleListings] = useState([]);
   const [rentListings, setRentListings] = useState([]);
+  console.log( saleListings);
   SwiperCore.use([Navigation]);
-  console.log(offerListings);
+
   useEffect(() => {
     const fetchOfferListings = async () => {
       try {
@@ -57,7 +58,9 @@ export default function Home() {
               <Link to={"/search"} className='text-blue-700 font-bold'>Let's Go</Link>
       </div>
 
-     <Swiper navigation>
+    
+      {/* swiper */}
+      <Swiper navigation>
         {offerListings &&
           offerListings.length > 0 &&
           offerListings.map((listing) => (
@@ -73,8 +76,10 @@ export default function Home() {
             </SwiperSlide>
           ))}
       </Swiper>
-       
-       <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
+
+      {/* listing results for offer, sale and rent */}
+
+      <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
         {offerListings && offerListings.length > 0 && (
           <div className=''>
             <div className='my-3'>
@@ -115,8 +120,6 @@ export default function Home() {
           </div>
         )}
       </div>
-
-
     </div>
-  )
+  );
 }
