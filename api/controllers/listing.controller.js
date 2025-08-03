@@ -28,19 +28,25 @@ export const deleteListing = async (req, res, next) => {
 }
 
 export const updateListing = async (req, res, next) => {
-    if(req.user.id !== req.body.userRef) {
-        return next(errorHandler(403, 'You are not allowed to update this listing'));
-    }
-     if(req.user.id!==listing.userRef){
-        return next(errorHandler(403, 'You are not allowed to delete this listing'));
-    }
-    try {
-        await Listing.findByIdAndUpdate(req.params.id, req.body,  {new:true});
-        res.status(200).json("Listing has been updated successfully!");
-    } catch (error) {
-        next(error);
-    }
-}
+  const listing = await Listing.findById(req.params.id);
+  if (!listing) {
+    return next(errorHandler(404, 'Listing not found!'));
+  }
+  if (req.user.id !== listing.userRef) {
+    return next(errorHandler(401, 'You can only update your own listings!'));
+  }
+
+  try {
+    const updatedListing = await Listing.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.status(200).json(updatedListing);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getListing = async (req, res, next) => {
     try{
@@ -93,7 +99,7 @@ export const getListings=async(req,res,next)=>{
             return res.status(200).json(listing);
 
     }
-    catch{
+    catch(error){
         next(error);
     }
 }
